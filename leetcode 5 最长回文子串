@@ -13,10 +13,27 @@
 输入：s = "a"
 输出："a"
 
-示例 4：
-输入：s = "ac"
-输出："a"
- 
 提示：
 1 <= s.length <= 1000
 s 仅由数字和英文字母（大写和/或小写）组成
+
+代码示意： 时间复杂度O（n^2） 空间复杂度O（n）
+在回文子串数目的题目上 增加一个对于当前回文子串长度的判断
+var longestPalindrome = function(s) {
+    if(!s || s.length<=1) return s;
+    let len = s.length;
+    let maxSubstring = s[0];
+    let dp = [];
+    for(let j=0;j<len;j++){
+        for(let i=0;i<=j;i++){
+            if(s[i] === s[j] &&( (j-i<=1) || dp[i+1])){
+                dp[i] = 1; //当前子串[i,j]是回文子串
+                if(maxSubstring.length<j-i+1)
+                  maxSubstring = s.substring(i,j+1);  //如果当前回文子串长度更长 更新最长回文子串
+            }else{
+                dp[i] = 0;
+            }
+        }
+    }
+    return maxSubstring;
+};
