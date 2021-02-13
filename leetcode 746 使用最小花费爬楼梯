@@ -17,3 +17,13 @@ cost 的长度将会在 [2, 1000] 。
 每一个 cost[i] 将会是一个Integer类型，范围为 [0, 999] 。
 
 代码示意：
+楼顶相当于求取爬到第n阶（n为原cost数组的长度）台阶的最低花费 这个台阶cost[n]可以初始化为0
+var minCostClimbingStairs = function(cost) {
+    if(cost.length<2) return 0;
+    let n = cost.length;cost.push(0);
+    let lowCost = [cost[0],cost[1]];
+    for(let i = 2;i<=n;i++){
+        lowCost[i] = Math.min(lowCost[i-1],lowCost[i-2])+cost[i];
+    }
+    return lowCost[n];
+};
