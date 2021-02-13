@@ -14,3 +14,64 @@
  
 提示：
 输入的字符串长度不会超过 1000 
+
+代码示意：
+一、暴力法：时间复杂度O（n^3） 空间复杂度O（1）
+两个指针 一个指向回文子串左边界 另一个遍历s作为右边界 通过辅助函数isSubtring来判断是否是回文子串 来统计回文子串个数
+var countSubstrings = function(s) {
+    let len = s.length;
+    if(!s || len<1) return 0;
+    let ans = len;
+    for(let i=0;i<len-1;i++){
+        for(let j=i+1;j<len;j++){
+            if(isSubstring(s,i,j)){
+                ans++;
+            }
+        }
+    }
+    return ans;
+};
+var isSubstring = function(s,left,right){
+    while(left<=right){
+        if(s[left] ===s[right]){
+            left++;
+            right--
+        }else {
+            return false;
+        }
+    }
+    return true;
+}
+二、动态规划 时间复杂度O（n^2）空间复杂度O（n^2）
+var countSubstrings = function(s) {
+    let len = s.length,count = 0;
+    if(!s || len<1) return count;
+    let dp = new Array(len).fill(0).map(()=>new Array(len).fill(0));
+    for(let j = 0;j<len;j++){ //注意先循环j即右边界的范围
+        for(let i=0;i<=j;i++){ //i<=j 左边界小于等于右边界
+            if(s[i]===s[j] && ((j-i<=1) || dp[i+1][j-1])){
+                dp[i][j] = 1;
+                ++count;
+            }
+        }
+    }
+    return count;
+}
+
+动态规划-优化-dp数组降维 空间复杂度O（n）
+var countSubstrings = function(s) {
+    let len = s.length,count = 0;
+    if(!s || len<1) return count;
+    let dp = new Array(len).fill(0);
+    for(let j = 0;j<len;j++){ //注意先循环j即右边界的范围
+        for(let i=0;i<=j;i++){ //i<=j 左边界小于等于右边界
+            if(s[i]===s[j] && ((j-i<=1) || dp[i+1])){
+                dp[i] = 1;
+                ++count;
+            }else{
+                dp[i] = 0;
+            }
+        }
+    }
+    return count;
+}
